@@ -1,39 +1,44 @@
 allow_embedding: false
 correct_dependency_ids: {dep_8rd14mcq0xmrs: KDKDM3MG6IQHC2FK, dep_ov7s33ibpc3w: C6ZZPAPN4YYF5NVJ, dep_rqq5sijbhk2ew: 3PIDO5P3H4VPEMPL}
 db_schema:
-  usermap:
+  permissions:
     client: none
     columns:
-    - admin_ui: {order: 1, width: 200}
-      name: notion_token
-      type: string
     - admin_ui: {order: 0, width: 200}
-      name: user
-      target: users
-      type: link_single
-    - admin_ui: {order: 11, width: 200}
-      name: prop_mapping
-      type: simpleObject
-    - admin_ui: {order: 12, width: 200}
-      name: defaults
-      type: simpleObject
-    - admin_ui: {order: 13, width: 200}
-      name: max_daily_hours
-      type: number
-    - admin_ui: {order: 14, width: 200}
-      name: bk_tasks
-      type: simpleObject
-    - admin_ui: {order: 15, width: 200}
-      name: customer_id
+      name: name
       type: string
-    - admin_ui: {order: 16, width: 200}
-      name: auto_refresh
+    server: full
+    title: Permissions
+  roles:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: permissions
+      target: permissions
+      type: link_multiple
+    - admin_ui: {order: 2, width: 200}
+      name: tenant
+      target: tenants
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: can_edit
       type: bool
-    - admin_ui: {order: 6, width: 200}
-      name: notion_db
+    server: full
+    title: Roles
+  tenants:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: new_roles
       type: simpleObject
     server: full
-    title: UserMap
+    title: Tenants
   users:
     client: none
     columns:
@@ -72,6 +77,43 @@ db_schema:
       type: string
     server: full
     title: Users
+  usertenant:
+    client: none
+    columns:
+    - admin_ui: {order: 1, width: 200}
+      name: notion_token
+      type: string
+    - admin_ui: {order: 0, width: 200}
+      name: user
+      target: users
+      type: link_single
+    - admin_ui: {order: 11, width: 200}
+      name: prop_mapping
+      type: simpleObject
+    - admin_ui: {order: 12, width: 200}
+      name: defaults
+      type: simpleObject
+    - admin_ui: {order: 13, width: 200}
+      name: max_daily_hours
+      type: number
+    - admin_ui: {order: 14, width: 200}
+      name: bk_tasks
+      type: simpleObject
+    - admin_ui: {order: 15, width: 200}
+      name: customer_id
+      type: string
+    - admin_ui: {order: 16, width: 200}
+      name: auto_refresh
+      type: bool
+    - admin_ui: {order: 6, width: 200}
+      name: notion_db
+      type: simpleObject
+    - admin_ui: {order: -1, width: 200}
+      name: tenant
+      target: tenants
+      type: link_single
+    server: full
+    title: UserTenant
 dependencies:
 - dep_id: dep_ov7s33ibpc3w
   resolution_hints: {app_id: CVAFGUBPSRFZNPZD, name: anvil_extras, package_name: anvil_extras}
