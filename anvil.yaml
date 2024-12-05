@@ -1,0 +1,171 @@
+allow_embedding: false
+correct_dependency_ids: {dep_8rd14mcq0xmrs: KDKDM3MG6IQHC2FK, dep_ov7s33ibpc3w: C6ZZPAPN4YYF5NVJ, dep_rqq5sijbhk2ew: 3PIDO5P3H4VPEMPL}
+db_schema:
+  usermap:
+    client: none
+    columns:
+    - admin_ui: {order: 1, width: 200}
+      name: notion_token
+      type: string
+    - admin_ui: {order: 0, width: 200}
+      name: user
+      target: users
+      type: link_single
+    - admin_ui: {order: 11, width: 200}
+      name: prop_mapping
+      type: simpleObject
+    - admin_ui: {order: 12, width: 200}
+      name: defaults
+      type: simpleObject
+    - admin_ui: {order: 13, width: 200}
+      name: max_daily_hours
+      type: number
+    - admin_ui: {order: 14, width: 200}
+      name: bk_tasks
+      type: simpleObject
+    - admin_ui: {order: 15, width: 200}
+      name: customer_id
+      type: string
+    - admin_ui: {order: 16, width: 200}
+      name: auto_refresh
+      type: bool
+    - admin_ui: {order: 6, width: 200}
+      name: notion_db
+      type: simpleObject
+    server: full
+    title: UserMap
+  users:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: email
+      type: string
+    - admin_ui: {width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {width: 200}
+      name: confirmed_email
+      type: bool
+    - admin_ui: {width: 200}
+      name: signed_up
+      type: datetime
+    - admin_ui: {width: 200}
+      name: remembered_logins
+      type: simpleObject
+    - admin_ui: {width: 200}
+      name: email_confirmation_key
+      type: string
+    - admin_ui: {order: 9, width: 200}
+      name: mfa
+      type: simpleObject
+    - admin_ui: {width: 200}
+      name: name
+      type: string
+    server: full
+    title: Users
+dependencies:
+- dep_id: dep_ov7s33ibpc3w
+  resolution_hints: {app_id: CVAFGUBPSRFZNPZD, name: anvil_extras, package_name: anvil_extras}
+  version: {version_tag: v2.7.1}
+- dep_id: dep_8rd14mcq0xmrs
+  resolution_hints: {app_id: KDKDM3MG6IQHC2FK, name: Anvil Squared, package_name: anvil_squared}
+  version: {version_tag: v1.0.0}
+- dep_id: dep_rqq5sijbhk2ew
+  resolution_hints: {app_id: 3PIDO5P3H4VPEMPL, name: routing, package_name: routing}
+  version: {version_tag: v0.3.2}
+metadata: {description: Dreamtask, logo_img: 'asset:dreamtask_mar20-logo.png', title: Dreamtask}
+name: Clone of Dreamtask
+native_deps:
+  head_html: |-
+    <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;600&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet" rel="preload" as="font" crossorigin="anonymous">
+
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      // Attempt to find an existing theme-color meta tag
+      var themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
+
+      if (themeColorMetaTag) {
+        // If found, update its content attribute to the new color
+        themeColorMetaTag.setAttribute('content', '#FFFBFE');
+        console.log("Theme color updated to #FFFBFE.");
+      } else {
+        // If not found, create a new meta tag for theme-color
+        themeColorMetaTag = document.createElement('meta');
+        themeColorMetaTag.name = 'theme-color';
+        themeColorMetaTag.content = '#FFFBFE';
+        document.head.appendChild(themeColorMetaTag);
+        console.log("Theme color meta tag added with color #FFFBFE.");
+      }
+    });
+    </script>
+package_name: dreamtask_core
+renamed: true
+runtime_options:
+  client_version: '3'
+  legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
+  server_spec: null
+  server_spec_disabled: {base: python310-datascience, requirements: ''}
+  server_version: python3-full
+  version: 3
+scheduled_tasks:
+- job_id: AWHQKPQG
+  task_name: rebalance1_routine
+  time_spec:
+    at: {hour: 6, minute: 0}
+    every: day
+    n: 1
+secrets:
+  LEMON_API:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: mCr4pfbDqWBAmFZs3euLxBkuJgiU6wSprN9ER4Np7R2QytYMH8rLcG4JG7aLhFnuguPXr48AioAio2a7+xdJfvBTpeN3AYMaGG4ej317t1rcvJU/Un6w1Rc3k44zoXJZJP1803co/pDgEM2NWMc4AwdYZ/io9QI=}
+  LEMON_API_TEST:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: rXOZ6QJK1QwXGLmG/wbr6amlPOgxOkd888zgYR7mdUW/+ehPf+JtYeDAEi00k99L7/CxCxvaQXOsBAvdNAIS/pBxZIAjrT2H4EDU7AU/tV19phy15RMNX9219j5V0opuDgTj4t5zHCDzXnP7ezbnT7BXMNSK9UI=}
+  LEMON_SIGNING:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: 2jtlgBd9j98Be0CoP/AbMBV2uA9tyBotNIMHQGLACZit4HkkZeH26eq9MTcs5+i1yS4M6r+W3FcOmZVYgcQafAOVvoeghQiUXjbJ8Rsb29cDw91joR+Lc7EwtXU0tzLTnCJcXxZQ1LwmKoUFMznRZNcwBaz0QQ8=}
+  LEMON_SIGNING_TEST:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: 7bAZy5zZktDAUD3JgPo0gApUfbM0kbquRjrB4BS22MoJgi+E+GsOql+aZUmcze9lnT05ucukph0uPDq5qpy0Gi8c7wJxvnigO3+IR9BThLgYWwCJcmSm/nwjgaEF+alXzuxOlT0jdhuqbIbqYwxjT11N5tZwWHc=}
+  NOTION_OAUTH_CLIENT_ID:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: FtaH5NrNX1ZnYNEw2CYa2EnxQ5K9Jv85+E9ddaORVUnR3oRRijOoVfWfAEP0jlQh1RkIrghP/xj70aXIZP714b9lAn5hX/lQ3pOOx4YoNjzcxoDhSRWlU85FBMDFiNRjzVXDadvTVgo2qHwOoBSRBl0wlzEAQY8Ch2DwYNsKFXKlu+w=}
+  NOTION_OAUTH_SECRET:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: vBHF2RBWhEfH1T1vj+j3kslQihBagUjtnqp8l4UOzGYTs8ddxNl4NkvnIDHRSZxwTf/WkXI5wEHYOTnAA+sV0dNWyu3sMtXzBuL7Wo7aAISEA43CUN+s6y7XrGaQWmE4zkvrLabKNsLyJUi5MhI/YLgGOPHw6flmAhKHHTTpoktQe6Dwmtlr3SMcD2955dpg/A==}
+  NOTION_OAUTH_URL:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: 8n/ND9zVt0pS5A2XBScGd0U6ble/Sk7O5YL7HesdbcHlu6Uv2gLZMYDAv3fdHdbGseVcWQD0n44cKAhgvtcPwzPOeij1oFK2qTkQRodr+YIOlrBxqCtnu/CPvjx6Phx1sPaT89KAFEjiw83s3A4/Fx6vXU29x2gMU0E4HZ0XXegjmAR+APHjeUHP2BtxNklnHON+4/+3VIq0RLYgoA8jixpw0YE+uWICIFMeJwIPOKBGG390ty/eK62i/g0wzF3FnMAOHPvZ2xqPCiNNYsH9oNl5sVcWZMN1eq0X7+HQUMzhsF8wo2IGPucIS/8AmgOdfdx2vk5ilFTMcVhpZvz4DhsLq9JGy4UttUhahQPCed8Dj6gKv3HzZEBb9JxWY8/EwogsBA==}
+  SQUARED:
+    type: secret
+    value: {56LZBDCMD4KWXWAZ: Su/7qNFR3YRTiJMk57Stm6Sh8ued5f57ElTuKfd7h8UbVsj40v/69R/j4X0kl5/KxBUSC+q8kGa6B/NElyCqjHf/yDPCTesAgrdmV6o0FgQI/zyHiyhL05CBVqp15sC2yVjyxmPRzLEUoqNrdOzJ1c78kxJCYsM=}
+  USER_SETTING:
+    type: key
+    value: {? '' : NzML6QdXLjZaHhbazo7Ce3pu/P2Dbhiwu2EFVXPI7dX6H7BK1wb9TbKXOMqpn3P0YYrPImqc3NyF2GKgJ7nHubZiPilevDFGwukyT0jhUhllkMVzFFVwdkVylLqYLB4zKGKDPZaLkiE6Q/TYpDyoRsHorh6+r7g=}
+services:
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/tables.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/anvil/secrets.yml
+- client_config: {allow_mfa_email_reset: true, allow_remember_me: true, allow_signup: true, confirm_email: true, enable_automatically: true, mfa_timeout_days: 7, remember_me_days: 30, require_mfa: true, require_secure_passwords: true, share_login_status: true, use_email: true, use_facebook: false, use_google: true, use_token: true}
+  server_config: {user_table: users}
+  source: /runtime/services/anvil/users.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/google.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/anvil/email.yml
+startup: {module: startup, type: module}
+startup_form: null

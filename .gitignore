@@ -1,0 +1,5 @@
+*.pyc
+*.pyo
+__pycache__
+.anvil-data
+.DS_Store
