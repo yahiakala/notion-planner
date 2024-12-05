@@ -1,13 +1,12 @@
 import anvil
 import datetime as dt
 import anvil.users
-from anvil_extras import routing
 
 from . import Global
 
 
-def print_timestamp(input_str):
-    print(input_str, " : ", dt.datetime.now().strftime("%H:%M:%S.%f"))
+# def print_timestamp(input_str):
+#     print(input_str, " : ", dt.datetime.now().strftime("%H:%M:%S.%f"))
 
 
 def responsive_button(text, background, icon):
@@ -18,14 +17,16 @@ def responsive_button(text, background, icon):
             fsize = 32
         else:
             fsize = 12
-        return Button(text=text, visible=True, background=background,
-                      icon=icon, icon_align='top', align='full', width='default',
-                      font_size=fsize
-                     )
+        return anvil.Button(text=text, visible=True, background=background,
+            icon=icon, icon_align='top', align='full', width='default',
+            font_size=fsize
+        )
     else:
-        return Button(text=text,
-                      visible=True,
-                      background=background,
-                      icon=icon,
-                      align='full',
-                      width='default')
+        return anvil.Button(
+            text=text,
+            visible=True,
+            background=background,
+            icon=icon,
+            align='full',
+            width='default'
+        )
