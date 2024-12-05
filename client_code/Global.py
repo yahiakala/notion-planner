@@ -1,7 +1,3 @@
-import anvil.server
-import anvil.users
-import anvil.js
-
 from anvil_squared.globals import GlobalCache
 
 _global_dict = {
@@ -21,3 +17,6 @@ _tenanted_dict = {
     'props_list': None
 }
 
+Global = GlobalCache(_global_dict, _tenanted_dict)
+
+AppName = "Notion Planner"
