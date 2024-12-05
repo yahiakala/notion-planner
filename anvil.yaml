@@ -82,8 +82,8 @@ dependencies:
 - dep_id: dep_rqq5sijbhk2ew
   resolution_hints: {app_id: 3PIDO5P3H4VPEMPL, name: routing, package_name: routing}
   version: {version_tag: v0.3.2}
-metadata: {description: Dreamtask, logo_img: 'asset:dreamtask_mar20-logo.png', title: Dreamtask}
-name: Clone of Dreamtask
+metadata: {description: Notion Planner, logo_img: 'asset:dreamtask_mar20-logo.png', title: Notion Planner}
+name: Notion Planner Core
 native_deps:
   head_html: |-
     <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;600&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet" rel="preload" as="font" crossorigin="anonymous">
@@ -107,7 +107,7 @@ native_deps:
       }
     });
     </script>
-package_name: dreamtask_core
+package_name: notion_planner_core
 renamed: true
 runtime_options:
   client_version: '3'
