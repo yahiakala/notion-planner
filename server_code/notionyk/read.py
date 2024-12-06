@@ -3,7 +3,6 @@ import anvil.http
 import anvil.server
 import anvil.users
 import anvil.secrets
-from anvil.tables import app_tables
 
 
 def isodate(iso_string):
@@ -74,6 +73,7 @@ def get_database(database_id, notion_token):
     }
     response = anvil.http.request(url, json=True, headers=headers)
     return response
+
 
 def search_databases(notion_token):
     """Get all databases from integration."""

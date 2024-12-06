@@ -11,6 +11,7 @@ def get_auth_code():
     """Get authorization URL."""
     import urllib.parse
     CLIENT_ID = anvil.secrets.get_secret('NOTION_OAUTH_CLIENT_ID')
+    # TODO: I think you need to send tenant id in this auth URL redirect param
     auth_url = (
         f"https://api.notion.com/v1/oauth/authorize?client_id={CLIENT_ID}" +
         "&response_type=code&owner=user&redirect_uri=" +
@@ -55,6 +56,7 @@ def get_auth_token(**params):
             print(f"Error {e.status}")
 
         user = anvil.users.get_user(allow_remembered=True)
+        # TODO: fix to explicitly get tenant
         userrow = app_tables.usertenant.get(user=user)
         print(response)
         access_token = response["access_token"] # also store bot_id, workspace_id, workspace_name, workspace_icon

@@ -1,7 +1,5 @@
-import anvil.server
-
 from . import read
-from . import write
+from . import write  # noqa
 
 
 props_list = [

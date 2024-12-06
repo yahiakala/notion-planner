@@ -1,12 +1,7 @@
 import anvil
-import datetime as dt
 import anvil.users
 
-from . import Global
-
-
-# def print_timestamp(input_str):
-#     print(input_str, " : ", dt.datetime.now().strftime("%H:%M:%S.%f"))
+from .Global import Global
 
 
 def responsive_button(text, background, icon):
