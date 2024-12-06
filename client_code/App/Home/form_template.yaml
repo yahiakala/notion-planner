@@ -28,7 +28,7 @@ components:
     type: Label
   - layout_properties: {grid_position: 'BGOTUP,HUPOND'}
     name: img_loading
-    properties: {source: _/theme/Infinity-1s-200px.gif}
+    properties: {source: _/theme/loading8.gif}
     type: Image
   layout_properties: {grid_position: 'MBNYYK,GWVCRT'}
   name: cp_loading

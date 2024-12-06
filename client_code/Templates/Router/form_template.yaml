@@ -30,7 +30,7 @@ components:
 - components:
   - layout_properties: {width: 40}
     name: img_logo
-    properties: {display_mode: fill_width, height: '30', source: _/theme/dreamtask_mar20_trans.png}
+    properties: {display_mode: fill_width, height: '30', source: _/theme/logo_trans.png}
     type: Image
   layout_properties: {slot: title}
   name: fp_title

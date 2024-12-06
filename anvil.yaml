@@ -124,7 +124,7 @@ dependencies:
 - dep_id: dep_rqq5sijbhk2ew
   resolution_hints: {app_id: 3PIDO5P3H4VPEMPL, name: routing, package_name: routing}
   version: {version_tag: v0.3.2}
-metadata: {description: Notion Planner, logo_img: 'asset:dreamtask_mar20-logo.png', title: Notion Planner}
+metadata: {description: Notion Planner, logo_img: 'asset:logo.png', title: Notion Planner}
 name: Notion Planner Core
 native_deps:
   head_html: |-
@@ -166,18 +166,6 @@ scheduled_tasks:
     every: day
     n: 1
 secrets:
-  LEMON_API:
-    type: secret
-    value: {56LZBDCMD4KWXWAZ: mCr4pfbDqWBAmFZs3euLxBkuJgiU6wSprN9ER4Np7R2QytYMH8rLcG4JG7aLhFnuguPXr48AioAio2a7+xdJfvBTpeN3AYMaGG4ej317t1rcvJU/Un6w1Rc3k44zoXJZJP1803co/pDgEM2NWMc4AwdYZ/io9QI=}
-  LEMON_API_TEST:
-    type: secret
-    value: {56LZBDCMD4KWXWAZ: rXOZ6QJK1QwXGLmG/wbr6amlPOgxOkd888zgYR7mdUW/+ehPf+JtYeDAEi00k99L7/CxCxvaQXOsBAvdNAIS/pBxZIAjrT2H4EDU7AU/tV19phy15RMNX9219j5V0opuDgTj4t5zHCDzXnP7ezbnT7BXMNSK9UI=}
-  LEMON_SIGNING:
-    type: secret
-    value: {56LZBDCMD4KWXWAZ: 2jtlgBd9j98Be0CoP/AbMBV2uA9tyBotNIMHQGLACZit4HkkZeH26eq9MTcs5+i1yS4M6r+W3FcOmZVYgcQafAOVvoeghQiUXjbJ8Rsb29cDw91joR+Lc7EwtXU0tzLTnCJcXxZQ1LwmKoUFMznRZNcwBaz0QQ8=}
-  LEMON_SIGNING_TEST:
-    type: secret
-    value: {56LZBDCMD4KWXWAZ: 7bAZy5zZktDAUD3JgPo0gApUfbM0kbquRjrB4BS22MoJgi+E+GsOql+aZUmcze9lnT05ucukph0uPDq5qpy0Gi8c7wJxvnigO3+IR9BThLgYWwCJcmSm/nwjgaEF+alXzuxOlT0jdhuqbIbqYwxjT11N5tZwWHc=}
   NOTION_OAUTH_CLIENT_ID:
     type: secret
     value: {56LZBDCMD4KWXWAZ: FtaH5NrNX1ZnYNEw2CYa2EnxQ5K9Jv85+E9ddaORVUnR3oRRijOoVfWfAEP0jlQh1RkIrghP/xj70aXIZP714b9lAn5hX/lQ3pOOx4YoNjzcxoDhSRWlU85FBMDFiNRjzVXDadvTVgo2qHwOoBSRBl0wlzEAQY8Ch2DwYNsKFXKlu+w=}
@@ -189,10 +177,10 @@ secrets:
     value: {56LZBDCMD4KWXWAZ: 8n/ND9zVt0pS5A2XBScGd0U6ble/Sk7O5YL7HesdbcHlu6Uv2gLZMYDAv3fdHdbGseVcWQD0n44cKAhgvtcPwzPOeij1oFK2qTkQRodr+YIOlrBxqCtnu/CPvjx6Phx1sPaT89KAFEjiw83s3A4/Fx6vXU29x2gMU0E4HZ0XXegjmAR+APHjeUHP2BtxNklnHON+4/+3VIq0RLYgoA8jixpw0YE+uWICIFMeJwIPOKBGG390ty/eK62i/g0wzF3FnMAOHPvZ2xqPCiNNYsH9oNl5sVcWZMN1eq0X7+HQUMzhsF8wo2IGPucIS/8AmgOdfdx2vk5ilFTMcVhpZvz4DhsLq9JGy4UttUhahQPCed8Dj6gKv3HzZEBb9JxWY8/EwogsBA==}
   SQUARED:
     type: secret
-    value: {56LZBDCMD4KWXWAZ: Su/7qNFR3YRTiJMk57Stm6Sh8ued5f57ElTuKfd7h8UbVsj40v/69R/j4X0kl5/KxBUSC+q8kGa6B/NElyCqjHf/yDPCTesAgrdmV6o0FgQI/zyHiyhL05CBVqp15sC2yVjyxmPRzLEUoqNrdOzJ1c78kxJCYsM=}
+    value: {56LZBDCMD4KWXWAZ: Su/7qNFR3YRTiJMk57Stm6Sh8ued5f57ElTuKfd7h8UbVsj40v/69R/j4X0kl5/KxBUSC+q8kGa6B/NElyCqjHf/yDPCTesAgrdmV6o0FgQI/zyHiyhL05CBVqp15sC2yVjyxmPRzLEUoqNrdOzJ1c78kxJCYsM=, SKCKPUFVJTQLNLCD: SWBu/MoK6zYvLl3FLAdXnDn4nBoslBZwrnOFy/c9esHvRo+n3Db8wxXbZ3f1FR+7LGQfVou4NHfsKOWjMrtlb6bE37QMV8G2CeGlO948m9cBEX7l4DKYVepgcDM1+I1ziR7iQpTOwmy25XNOqB7weXQGScIDzHo=}
   USER_SETTING:
     type: key
-    value: {? '' : NzML6QdXLjZaHhbazo7Ce3pu/P2Dbhiwu2EFVXPI7dX6H7BK1wb9TbKXOMqpn3P0YYrPImqc3NyF2GKgJ7nHubZiPilevDFGwukyT0jhUhllkMVzFFVwdkVylLqYLB4zKGKDPZaLkiE6Q/TYpDyoRsHorh6+r7g=}
+    value: {? '' : NzML6QdXLjZaHhbazo7Ce3pu/P2Dbhiwu2EFVXPI7dX6H7BK1wb9TbKXOMqpn3P0YYrPImqc3NyF2GKgJ7nHubZiPilevDFGwukyT0jhUhllkMVzFFVwdkVylLqYLB4zKGKDPZaLkiE6Q/TYpDyoRsHorh6+r7g=, SKCKPUFVJTQLNLCD: 5GDKiVnUkYrzYPU4goG1stflMikiH6ia5/5AiLMOjslQvxkJpXrHaTpxXNWsPZLF5VfANfqT+WFacUCvtGGmcUdKGSs2iSmaqKSPg4aQ+PDp8QBOhuFkTVdt5vrD2Ck2QzfkqyLcJVLnGPPH+Wmv6NwF210UiMc=}
 services:
 - client_config: {}
   server_config: {}

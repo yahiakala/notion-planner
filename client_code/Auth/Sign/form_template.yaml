@@ -29,7 +29,7 @@ components:
       type: Button
     - layout_properties: {grid_position: 'ZLAQUD,WJJNKY'}
       name: img_logo
-      properties: {display_mode: shrink_to_fit, source: _/theme/dreamtask_mar20_trans.png}
+      properties: {display_mode: shrink_to_fit, source: _/theme/logo_trans.png}
       type: Image
     name: cp_login
     properties:

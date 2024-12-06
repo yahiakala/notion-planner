@@ -67,7 +67,7 @@ components:
     type: Label
   - layout_properties: {grid_position: 'XSVFGK,SKPTSE'}
     name: img_logo
-    properties: {display_mode: shrink_to_fit, source: _/theme/dreamtask_mar20_trans.png}
+    properties: {display_mode: shrink_to_fit, source: _/theme/logo_trans.png}
     type: Image
   layout_properties: {grid_position: 'HHTYIQ,IGSYLH'}
   name: cp_login
