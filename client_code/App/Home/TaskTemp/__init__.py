@@ -22,16 +22,16 @@ class TaskTemp(TaskTempTemplate):
 
     def btn_pause_click(self, **event_args):
         """This method is called when the button is clicked"""
-        anvil.server.call('remove_task_deadline', self.item)
+        anvil.server.call('remove_task_deadline', Global.tenant_id, self.item)
         self.parent.raise_event('x-removetask', task=self.item)
 
     def btn_later_click(self, **event_args):
         """This method is called when the button is clicked"""
-        anvil.server.call('remove_hard_deadline', self.item)
+        anvil.server.call('remove_hard_deadline', Global.tenant_id, self.item)
         self.parent.raise_event('x-removetask', task=self.item)
 
     def btn_shift_click(self, **event_args):
         """This method is called when the button is clicked"""
-        anvil.server.call('delay_deadline', self.item)
+        anvil.server.call('delay_deadline', Global.tenant_id, self.item)
         self.parent.raise_event('x-removetask', task=self.item)
 

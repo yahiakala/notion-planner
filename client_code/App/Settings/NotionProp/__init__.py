@@ -17,8 +17,8 @@ class NotionProp(NotionPropTemplate):
         self.icon_err.visible = False
         self.icon_ok.visible = False
         try:
-            Global.usermap = anvil.server.call(
-                'validate_prop', self.item['type'], self.tb_prop.text, self.item['id']
+            Global.usertenant = anvil.server.call(
+                'validate_prop', Global.tenant_id, self.item['type'], self.tb_prop.text, self.item['id']
             )
             self.icon_ok.visible = True
             Global.today_tasks = None

@@ -55,7 +55,7 @@ def get_auth_token(**params):
             print(f"Error {e.status}")
 
         user = anvil.users.get_user(allow_remembered=True)
-        userrow = app_tables.usermap.get(user=user)
+        userrow = app_tables.usertenant.get(user=user)
         print(response)
         access_token = response["access_token"] # also store bot_id, workspace_id, workspace_name, workspace_icon
         userrow['notion_token'] = anvil.secrets.encrypt_with_key('USER_SETTING', access_token)

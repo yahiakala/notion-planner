@@ -5,26 +5,18 @@ components:
   properties: {col_widths: '{}'}
   type: ColumnPanel
 - components:
-  - event_bindings: {click: nav_click}
-    layout_properties: {grid_position: 'ADXXOB,CVEQDZ'}
-    name: link_home
-    properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Home, tooltip: '', underline: false, url: '', visible: true, wrap_on: mobile}
-    type: Link
-  - event_bindings: {click: nav_click}
-    layout_properties: {grid_position: 'NIOLVD,GYCNRV'}
-    name: link_settings
-    properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Settings, tooltip: '', underline: false, url: '', visible: true, wrap_on: mobile}
-    type: Link
-  - event_bindings: {click: nav_click}
-    layout_properties: {grid_position: 'OPOYYU,UGCYTX'}
-    name: link_account
-    properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Account, tooltip: '', underline: false, url: '', visible: false, wrap_on: mobile}
-    type: Link
-  - event_bindings: {click: nav_click}
-    layout_properties: {grid_position: 'XCJKYF,PWOGWK'}
-    name: link_tasks
-    properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Tasks, tooltip: '', underline: false, url: '', visible: false, wrap_on: mobile}
-    type: Link
+  - layout_properties: {grid_position: 'VJQWNW,PXLUPM'}
+    name: nav_home
+    properties: {path: /app/home, text: Home}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
+  - layout_properties: {grid_position: 'OSIVUM,AAVXTS'}
+    name: nav_settings
+    properties: {path: /app/settings, text: Settings}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
+  - layout_properties: {grid_position: 'WFSSFT,ENXFDM'}
+    name: nav_tasks
+    properties: {path: /app/rebalance, text: Tasks}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
   - components: []
     event_bindings: {click: link_logout_click}
     layout_properties: {grid_position: 'JKQMJO,UYKNIK'}
@@ -40,18 +32,19 @@ components:
     name: img_logo
     properties: {display_mode: fill_width, height: '30', source: _/theme/dreamtask_mar20_trans.png}
     type: Image
-  - name: lbl_title
-    properties: {text: DreamTask}
-    type: Label
   layout_properties: {slot: title}
   name: fp_title
   properties: {spacing: none, vertical_align: middle}
   type: FlowPanel
-- event_bindings: {click: btn_help_click}
+- components:
+  - event_bindings: {click: link_help_click}
+    name: link_help
+    properties: {icon: 'fa:question-circle', text: ''}
+    type: Link
   layout_properties: {slot: nav-right}
-  name: btn_help
-  properties: {icon: '', icon_align: right, role: outlined-button, text: Help}
-  type: Button
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

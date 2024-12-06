@@ -13,7 +13,7 @@ _tenanted_dict = {
     'last_week_plot': None,
     'max_hrs': None,
     'today_tasks': None,
-    'usermap': None,
+    'usertenant': None,
     'props_list': None
 }
 

@@ -1,13 +1,10 @@
 from ._anvil_designer import SettingsTemplate
 from anvil import *
 import anvil.users
-from anvil_extras import routing
 
-# from .. import Global
-from ..Global import Global
+from ...Global import Global
 
 
-@routing.route('/settings', template='Router')
 class Settings(SettingsTemplate):
     def __init__(self, **properties):
         # Set Form properties and Data Bindings.
@@ -22,28 +19,28 @@ class Settings(SettingsTemplate):
             self.cp_mfa.visible = True
         self.rp_mfa.items = self.user['mfa']
 
-        self.usermap = Global.usermap
-        if self.usermap['notion_token']:
+        self.usertenant = Global.usertenant
+        if self.usertenant['notion_token']:
             self.btn_setup_integration.text = 'Update Integration'
             self.cp_prop_setup.visible = True
-            if self.usermap['notion_db']:
+            if self.usertenant['notion_db']:
                 self.cp_properties.visible = True
 
         self.props_list = Global.props_list
         self.rp_db_prop.items = self.props_list
-        if self.usermap['notion_db']:
-            self.lbl_task_database.text = f"Task Database: {self.usermap['notion_db']['title']}"
+        if self.usertenant['notion_db']:
+            self.lbl_task_database.text = f"Task Database: {self.usertenant['notion_db']['title']}"
         else:
             self.lbl_task_database.text = 'Task Database not set.'
 
     def btn_setup_integration_click(self, **event_args):
         """This method is called when the button is clicked"""
-        auth_url = anvil.server.call('get_auth_code')
+        auth_url = anvil.server.call('get_auth_code', Global.tenant_id)
         anvil.js.window.location.href = auth_url
 
     def btn_chg_pw_click(self, **event_args):
         self.lbl_pw_error.visible = False
-        user = Global.user
+        self.user = Global.user
         if self.tb_oldpw.text and self.tb_newpw.text:
             print('Changing password')
             try:
@@ -95,19 +92,19 @@ class Settings(SettingsTemplate):
             self.user = anvil.server.call('delete_mfa_method', event_args['password'], event_args['id'])
             Global.user = self.user
             self.rp_mfa.items = self.user['mfa']
-        except anvil.users.AuthenticationFailed as e:
+        except anvil.users.AuthenticationFailed:
             alert('Password is incorrect.')
 
     def btn_task_db_click(self, **event_args):
         """This method is called when the button is clicked"""
-        dbs = anvil.server.call('get_databases_for_dd')
+        dbs = anvil.server.call('get_databases_for_dd', Global.tenant_id)
         self.dd_db_select.items = [(db['title'], db) for db in dbs]
         self.cp_change_db.visible = True
 
     def btn_save_db_click(self, **event_args):
         """This method is called when the button is clicked"""
         self.cp_change_db.visible = False
-        self.usermap = anvil.server.call('save_database', self.dd_db_select.selected_value)
-        self.lbl_task_database.text = f"Task Database: {self.usermap['notion_db']['title']}"
-        if self.usermap['notion_db']:
+        self.usertenant = anvil.server.call('save_database', Global.tenant_id, self.dd_db_select.selected_value)
+        self.lbl_task_database.text = f"Task Database: {self.usertenant['notion_db']['title']}"
+        if self.usertenant['notion_db']:
             self.cp_properties.visible = True

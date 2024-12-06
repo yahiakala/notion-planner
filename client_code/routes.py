@@ -25,16 +25,9 @@ class EnsureUserMixin:
                 raise Redirect(path="/app/admin")
 
 
-class LandingRoute(BaseRoute):
-    template = "Templates.Website"
-    path = "/"
-    form = "Website.Landing"
-    cache_form = True
-
-
 class SignRoute(BaseRoute):
     template = "Templates.Static"
-    path = "/sign"
+    path = "/"
     form = "Auth.Sign"
     cache_form = True
 
@@ -74,8 +67,8 @@ class AdminRoute(EnsureUserMixin, BaseRoute):
     cache_form = True
 
 
-class TestsRoute(EnsureUserMixin, BaseRoute):
+class TasksRoute(EnsureUserMixin, BaseRoute):
     template = "Templates.Router"
-    path = "/app/tests"
-    form = "App.Tests"
+    path = "/app/tasks"
+    form = "App.Rebalance"
     cache_form = True
