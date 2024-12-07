@@ -1,5 +1,8 @@
 """Public Auth Code."""
 
+import base64
+import json
+
 import anvil.http
 import anvil.secrets
 import anvil.server
@@ -8,15 +11,21 @@ from anvil.tables import app_tables
 
 
 @anvil.server.callable(require_user=True)
-def get_auth_code():
+def get_auth_code(tenant_id):
     """Get authorization URL."""
     import urllib.parse
 
     CLIENT_ID = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
-    # TODO: I think you need to send tenant id in this auth URL redirect param
+    # Encode tenant_id in state parameter
+    state = base64.urlsafe_b64encode(
+        json.dumps({"tenant_id": tenant_id}).encode()
+    ).decode()
+
     auth_url = (
         f"https://api.notion.com/v1/oauth/authorize?client_id={CLIENT_ID}"
-        + "&response_type=code&owner=user&redirect_uri="
+        + "&response_type=code&owner=user"
+        + f"&state={state}"
+        + "&redirect_uri="
         + urllib.parse.quote(
             anvil.server.get_api_origin() + "/notion_redirect", safe=""
         )
@@ -37,11 +46,12 @@ def get_auth_token(**params):
     if "error" in params:
         pass
     else:
+        # Decode state parameter to get tenant_id
+        state_data = json.loads(base64.urlsafe_b64decode(params["state"]).decode())
+        tenant_id = state_data["tenant_id"]
+        print(tenant_id)
+
         url = "https://api.notion.com/v1/oauth/token"
-        # payload = anvil.server.request.body.get_bytes()
-        # payload_dict = json.loads(payload.decode('utf-8'))
-        # header_signature = anvil.server.request.headers.get('x-discourse-event-signature')
-        # print(payload)
         data = {
             "grant_type": "authorization_code",
             "code": params["code"],
@@ -63,12 +73,10 @@ def get_auth_token(**params):
             print(f"Error {e.status}")
 
         user = anvil.users.get_user(allow_remembered=True)
-        # TODO: fix to explicitly get tenant
-        userrow = app_tables.usertenant.get(user=user)
+        # Use both user and tenant_id to get the correct row
+        userrow = app_tables.usertenant.get(user=user, tenant_id=tenant_id)
         print(response)
-        access_token = response[
-            "access_token"
-        ]  # also store bot_id, workspace_id, workspace_name, workspace_icon
+        access_token = response["access_token"]
         userrow["notion_token"] = anvil.secrets.encrypt_with_key(
             "USER_SETTING", access_token
         )
