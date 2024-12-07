@@ -1,10 +1,10 @@
-from ._anvil_designer import SignupTemplate
-from anvil import *
 import anvil.users
+from anvil import *
 from anvil_squared import utils
 from routing import router
 
-from ...Global import Global, AppName  # noqa
+from ...Global import AppName, Global  # noqa
+from ._anvil_designer import SignupTemplate
 
 
 class Signup(SignupTemplate):

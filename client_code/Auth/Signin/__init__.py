@@ -1,10 +1,10 @@
-from ._anvil_designer import SigninTemplate
-from anvil import *
 import anvil.users
+from anvil import *
 from anvil_squared import utils
 from routing import router
 
-from ...Global import Global, AppName  # noqa
+from ...Global import AppName, Global  # noqa
+from ._anvil_designer import SigninTemplate
 
 
 class Signin(SigninTemplate):
@@ -33,7 +33,7 @@ class Signin(SigninTemplate):
             self.tb_password.text = ""
             Global.user = self.user
             router.navigate(path="/app/home")
-    
+
     def btn_google_click(self, **event_args):
         """Signin with google. Creates a user if none exists."""
         # Disable button and show processing state

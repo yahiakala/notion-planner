@@ -36,13 +36,13 @@ def usertenant_row_to_dict(row):
             None, row["user"], tenant=row["tenant"], usertenant=row
         ),
         "roles": authorization.get_user_roles(None, None, row, row["tenant"]),
-        "prop_mapping": row['prop_mapping'],
-        "max_daily_hours": row['max_daily_hours'],
-        "defaults": row['defaults'],
-        'notion_token': row['notion_token'],
-        'notion_db': row['notion_db'],
-        'customer_id': row['customer_id'],
-        'auto_refresh': row['auto_refresh']
+        "prop_mapping": row["prop_mapping"],
+        "max_daily_hours": row["max_daily_hours"],
+        "defaults": row["defaults"],
+        "notion_token": row["notion_token"],
+        "notion_db": row["notion_db"],
+        "customer_id": row["customer_id"],
+        "auto_refresh": row["auto_refresh"],
     }
     return row_dict
 

@@ -9,13 +9,13 @@ _global_dict = {
 }
 
 _tenanted_dict = {
-    'last_week': None,
-    'last_week_plot': None,
-    'max_hrs': None,
-    'today_tasks': None,
-    'usertenant': None,
-    'props_list': None,
-    'permissions': None
+    "last_week": None,
+    "last_week_plot": None,
+    "max_hrs": None,
+    "today_tasks": None,
+    "usertenant": None,
+    "props_list": None,
+    "permissions": None,
 }
 
 Global = GlobalCache(_global_dict, _tenanted_dict)

@@ -1,10 +1,11 @@
-from ._anvil_designer import SignTemplate
-from anvil import *
-import anvil.users
 import time
+
+import anvil.users
+from anvil import *
 from routing import router
 
-from ...Global import Global, AppName  # noqa
+from ...Global import AppName, Global  # noqa
+from ._anvil_designer import SignTemplate
 
 
 class Sign(SignTemplate):

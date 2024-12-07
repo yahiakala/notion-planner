@@ -5,8 +5,9 @@ import anvil_squared.multi_tenant as mt
 from anvil.tables import app_tables
 from anvil_squared.helpers import print_timestamp
 
-from .helpers import usertenant_row_to_dict
 from . import notionyk
+from .helpers import usertenant_row_to_dict
+
 
 # --------------------
 # Non tenanted globals
@@ -47,9 +48,9 @@ def get_usertenant_dict(tenant_id, user):
     """Get user tenant data including Notion settings"""
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
 
-    usertenant['prop_mapping'] = usertenant['prop_mapping'] or notionyk.props_dict
-    usertenant['max_daily_hours'] = usertenant['max_daily_hours'] or 6
-    usertenant['defaults'] = usertenant['defaults'] or {'hours': 4}
-    
+    usertenant["prop_mapping"] = usertenant["prop_mapping"] or notionyk.props_dict
+    usertenant["max_daily_hours"] = usertenant["max_daily_hours"] or 6
+    usertenant["defaults"] = usertenant["defaults"] or {"hours": 4}
+
     data = usertenant_row_to_dict(usertenant)
     return data

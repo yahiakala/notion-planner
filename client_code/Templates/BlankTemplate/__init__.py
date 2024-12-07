@@ -1,5 +1,6 @@
-from ._anvil_designer import BlankTemplateTemplate
 from anvil import *
+
+from ._anvil_designer import BlankTemplateTemplate
 
 
 class BlankTemplate(BlankTemplateTemplate):

@@ -1,8 +1,8 @@
-from ._anvil_designer import NotionPropTemplate
-from anvil import *
 import anvil.server
+from anvil import *
 
 from ....Global import Global
+from ._anvil_designer import NotionPropTemplate
 
 
 class NotionProp(NotionPropTemplate):
@@ -18,14 +18,18 @@ class NotionProp(NotionPropTemplate):
         self.icon_ok.visible = False
         try:
             Global.usertenant = anvil.server.call(
-                'validate_prop', Global.tenant_id, self.item['type'], self.tb_prop.text, self.item['id']
+                "validate_prop",
+                Global.tenant_id,
+                self.item["type"],
+                self.tb_prop.text,
+                self.item["id"],
             )
             self.icon_ok.visible = True
             Global.today_tasks = None
             Global.props_list = None
         except Exception as e:
-            if 'NotionError' in str(e):
-                self.lbl_error.text = str(e.args[0]).replace('NotionError:', '').strip()
+            if "NotionError" in str(e):
+                self.lbl_error.text = str(e.args[0]).replace("NotionError:", "").strip()
                 self.lbl_error.visible = True
                 self.icon_err.visible = True
             else:

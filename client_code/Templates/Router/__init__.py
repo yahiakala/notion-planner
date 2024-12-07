@@ -1,11 +1,10 @@
-from ._anvil_designer import RouterTemplate
-from anvil import *
-import anvil.users
 import anvil.server
-
+import anvil.users
+from anvil import *
 from routing import router
 
 from ...Global import Global
+from ._anvil_designer import RouterTemplate
 
 
 class Router(RouterTemplate):
@@ -14,7 +13,7 @@ class Router(RouterTemplate):
         self.init_components(**properties)
         is_mobile = anvil.js.window.navigator.userAgent.lower().find("mobi") > -1
         Global.is_mobile = is_mobile
-    
+
         # Any code you write here will run when the form opens.
         user = Global.user
         self.set_account_state(user)
@@ -37,4 +36,4 @@ class Router(RouterTemplate):
 
     def link_help_click(self, **event_args):
         """This method is called when the link is clicked"""
-        alert('For help please email support@dreambyte.ai')
+        alert("For help please email support@dreambyte.ai")

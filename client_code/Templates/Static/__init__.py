@@ -1,5 +1,6 @@
-from ._anvil_designer import StaticTemplate
 from anvil import *
+
+from ._anvil_designer import StaticTemplate
 
 
 class Static(StaticTemplate):
