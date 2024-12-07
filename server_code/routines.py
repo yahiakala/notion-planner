@@ -7,7 +7,8 @@ import anvil.tables.query as q
 
 from . import notionyk
 
-from anvil_squared.helpers import print_timestamp, proceed_or_abort, user_bk_running
+from anvil_squared.background_tasks import proceed_or_abort, user_bk_running
+from anvil_squared.helpers import print_timestamp
 import anvil_squared.multi_tenant as mt
 
 

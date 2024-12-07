@@ -15,7 +15,7 @@ components:
     type: form:dep_rqq5sijbhk2ew:router.NavLink
   - layout_properties: {grid_position: 'WFSSFT,ENXFDM'}
     name: nav_tasks
-    properties: {path: /app/rebalance, text: Tasks}
+    properties: {path: /app/tasks, text: Tasks}
     type: form:dep_rqq5sijbhk2ew:router.NavLink
   - components: []
     event_bindings: {click: link_logout_click}

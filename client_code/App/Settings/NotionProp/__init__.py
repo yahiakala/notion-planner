@@ -2,7 +2,7 @@ from ._anvil_designer import NotionPropTemplate
 from anvil import *
 import anvil.server
 
-from ... import Global
+from ....Global import Global
 
 
 class NotionProp(NotionPropTemplate):

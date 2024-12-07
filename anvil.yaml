@@ -112,6 +112,10 @@ db_schema:
       name: tenant
       target: tenants
       type: link_single
+    - admin_ui: {order: 0.5, width: 200}
+      name: roles
+      target: roles
+      type: link_multiple
     server: full
     title: UserTenant
 dependencies:

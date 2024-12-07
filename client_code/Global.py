@@ -14,7 +14,8 @@ _tenanted_dict = {
     'max_hrs': None,
     'today_tasks': None,
     'usertenant': None,
-    'props_list': None
+    'props_list': None,
+    'permissions': None
 }
 
 Global = GlobalCache(_global_dict, _tenanted_dict)
