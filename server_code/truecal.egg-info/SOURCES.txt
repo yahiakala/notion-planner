@@ -1,8 +1,0 @@
-setup.py
-truecal/__init__.py
-truecal/read_notion.py
-truecal/write_notion.py
-truecal.egg-info/PKG-INFO
-truecal.egg-info/SOURCES.txt
-truecal.egg-info/dependency_links.txt
-truecal.egg-info/top_level.txt
