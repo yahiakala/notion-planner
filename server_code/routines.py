@@ -5,7 +5,7 @@ import anvil.server
 import anvil.tables.query as q
 import anvil.users
 import anvil_squared.multi_tenant as mt
-from anvil.tables import app_tables
+# from anvil.tables import app_tables
 from anvil_squared.background_tasks import proceed_or_abort, user_bk_running
 from anvil_squared.helpers import print_timestamp
 
@@ -17,7 +17,7 @@ def get_max_hrs(tenant_id):
     """Return the max hours defined by the user."""
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    return usertenant["max_daily_hours"] or 6
+    return tenant["max_daily_hours"] or 6
 
 
 @anvil.server.callable(require_user=True)
@@ -30,26 +30,26 @@ def get_today_tasks(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     if (
-        not usertenant["notion_token"]
-        or not usertenant["prop_mapping"]
+        not tenant["notion_token"]
+        or not tenant["prop_mapping"]
         or not ["notion_db"]
         or not validate_props(silent=True)
     ):
         return []
 
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
 
     today_str = (dt.datetime.now(pytz.timezone("US/Eastern"))).strftime("%Y-%m-%d")
     today_filter = {
         "and": [
             {
-                "property": usertenant["prop_mapping"]["done"],
+                "property": tenant["prop_mapping"]["done"],
                 "checkbox": {"equals": False},
             },
             {
-                "property": usertenant["prop_mapping"]["scheduled"],
+                "property": tenant["prop_mapping"]["scheduled"],
                 "date": {"on_or_before": today_str},
             },
         ]
@@ -57,9 +57,9 @@ def get_today_tasks(tenant_id):
 
     today_tasks = notionyk.read.get_all_data(
         notion_token,
-        usertenant["notion_db"]["id"],
-        usertenant["prop_mapping"],
-        usertenant["defaults"],
+        tenant["notion_db"]["id"],
+        tenant["prop_mapping"],
+        tenant["defaults"],
         today_filter,
     )
 
@@ -103,77 +103,67 @@ def give_me_task(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
 
     today_str = (dt.datetime.now(pytz.timezone("US/Eastern"))).strftime("%Y-%m-%d")
     today_filter = {
         "and": [
             {
-                "property": usertenant["prop_mapping"]["done"],
+                "property": tenant["prop_mapping"]["done"],
                 "checkbox": {"equals": False},
             },
             {
-                "property": usertenant["prop_mapping"]["scheduled"],
+                "property": tenant["prop_mapping"]["scheduled"],
                 "date": {"on_or_before": today_str},
             },
         ]
     }
     today_tasks = notionyk.read.get_response(
-        usertenant["notion_db"]["id"], notion_token, queryfilter=today_filter
+        tenant["notion_db"]["id"], notion_token, queryfilter=today_filter
     )["results"]
     today_task_url = today_tasks[0]["url"]
     return today_task_url
 
 
 @anvil.server.background_task
-def rebalance1_single(usertenant):
-    usertenant = proceed_or_abort(
-        usertenant, anvil.server.context.background_task_id, "rebalance1_single"
+def rebalance1_single(tenant):
+    tenant = proceed_or_abort(
+        tenant, anvil.server.context.background_task_id, "rebalance1_single"
     )
-    if not usertenant:
+    if not tenant:
         print_timestamp("Aborting: existing background task is running")
         return None
 
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
 
     rebalanced = notionyk.rebalance0(
         notion_token,
-        usertenant["notion_db"]["id"],
-        usertenant["prop_mapping"],
-        usertenant["defaults"],
-        usertenant["max_daily_hours"],
+        tenant["notion_db"]["id"],
+        tenant["prop_mapping"],
+        tenant["defaults"],
+        tenant["max_daily_hours"],
     )
     for task in rebalanced:
         notionyk.write.prop_date_value(
             notion_token,
             task["id"],
-            usertenant["prop_mapping"]["scheduled"],
+            tenant["prop_mapping"]["scheduled"],
             task["scheduled"]["string"],
             verbose=False,
         )
         notionyk.write.prop_date_value(
             notion_token,
             task["id"],
-            usertenant["prop_mapping"]["deadline"],
+            tenant["prop_mapping"]["deadline"],
             task["deadline"]["string"],
             verbose=False,
         )
 
 
-@anvil.server.background_task
-def rebalance1_routine(usertenants=None):
-    """Run this when we rebalance."""
-    # TODO: use proceed_or_abort_scheduled when this is a scheduled task.
-    if not usertenants:
-        usertenants = app_tables.usertenant.search(
-            notion_token=q.not_(None), auto_refresh=True
-        )
 
-    for usertenant in usertenants:
-        rebalance1_single(usertenant)
 
 
 @anvil.server.callable(require_user=True)
@@ -181,7 +171,7 @@ def rebalance1_call(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     if validate_props(silent=True):
-        return anvil.server.launch_background_task("rebalance1_single", usertenant)
+        return anvil.server.launch_background_task("rebalance1_single", tenant)
     else:
         return None
 
@@ -202,7 +192,7 @@ def reschedule_from_extension(tenant_id):
     print_timestamp("reschedule_from_extension: got usertenant")
     if validate_props(silent=True):
         print_timestamp("User is validated and logged in.")
-        anvil.server.launch_background_task("rebalance1_single", usertenant)
+        anvil.server.launch_background_task("rebalance1_single", tenant)
         return anvil.server.HttpResponse(200)
     else:
         anvil.server.HttpResponse(400)
@@ -221,7 +211,7 @@ def dt_bk_running(tenant_id, table_name, bk_name):
 def reschedule_running():
     # TODO: not used yet.
     # TODO: authorize
-    is_running = user_bk_running("usertenant", "rebalance1_single")
+    is_running = user_bk_running("tenant", "rebalance1_single")
     headers = {"Content-Type": "application/json"}
     return anvil.server.HttpResponse(
         {"is_running": is_running}, headers=headers, status=200
@@ -234,17 +224,17 @@ def remove_task_deadline(tenant_id, task):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
 
     notionyk.write.prop_date_value(
-        notion_token, task["id"], usertenant["prop_mapping"]["deadline"], ""
+        notion_token, task["id"], tenant["prop_mapping"]["deadline"], ""
     )
     notionyk.write.prop_bool_value(
-        notion_token, task["id"], usertenant["prop_mapping"]["hard_deadline"], False
+        notion_token, task["id"], tenant["prop_mapping"]["hard_deadline"], False
     )
     notionyk.write.prop_date_value(
-        notion_token, task["id"], usertenant["prop_mapping"]["scheduled"], ""
+        notion_token, task["id"], tenant["prop_mapping"]["scheduled"], ""
     )
 
 
@@ -254,14 +244,14 @@ def remove_hard_deadline(tenant_id, task):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
 
     notionyk.write.prop_bool_value(
-        notion_token, task["id"], usertenant["prop_mapping"]["hard_deadline"], False
+        notion_token, task["id"], tenant["prop_mapping"]["hard_deadline"], False
     )
     notionyk.write.prop_date_value(
-        notion_token, task["id"], usertenant["prop_mapping"]["scheduled"], ""
+        notion_token, task["id"], tenant["prop_mapping"]["scheduled"], ""
     )
 
 
@@ -271,20 +261,20 @@ def delay_deadline(tenant_id, task):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
     # print(task['deadline_next'])
     notionyk.write.prop_date_value(
         notion_token,
         task["id"],
-        usertenant["prop_mapping"]["deadline"],
+        tenant["prop_mapping"]["deadline"],
         task["deadline_next"]["string"],
         verbose=False,
     )
     notionyk.write.prop_date_value(
         notion_token,
         task["id"],
-        usertenant["prop_mapping"]["scheduled"],
+        tenant["prop_mapping"]["scheduled"],
         "",
         verbose=False,
     )
@@ -296,8 +286,8 @@ def get_props_list(tenant_id):
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     props_list = notionyk.props_list
     for prop in props_list:
-        if usertenant["prop_mapping"] and prop["id"] in usertenant["prop_mapping"]:
-            prop["alias"] = usertenant["prop_mapping"][prop["id"]]
+        if tenant["prop_mapping"] and prop["id"] in tenant["prop_mapping"]:
+            prop["alias"] = tenant["prop_mapping"][prop["id"]]
     return props_list
 
 
@@ -325,9 +315,9 @@ def validate_prop(tenant_id, prop_type, prop_alias, prop_id=None):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
-    db_props = notionyk.read.get_database(usertenant["notion_db"]["id"], notion_token)
+    db_props = notionyk.read.get_database(tenant["notion_db"]["id"], notion_token)
 
     if prop_alias not in db_props["properties"].keys():
         raise Exception(
@@ -339,10 +329,10 @@ def validate_prop(tenant_id, prop_type, prop_alias, prop_id=None):
         )
 
     if prop_id:
-        prop_dict = usertenant["prop_mapping"].copy()
+        prop_dict = tenant["prop_mapping"].copy()
         prop_dict[prop_id] = prop_alias
-        usertenant["prop_mapping"] = prop_dict
-    return usertenant
+        tenant["prop_mapping"] = prop_dict
+    return tenant
 
 
 @anvil.server.callable(require_user=True)
@@ -350,7 +340,7 @@ def get_databases_for_dd(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
     notion_token = anvil.secrets.decrypt_with_key(
-        "USER_SETTING", usertenant["notion_token"]
+        "USER_SETTING", tenant["notion_token"]
     )
     dbs = notionyk.read.search_databases(notion_token)
     data_list = []
@@ -366,5 +356,5 @@ def get_databases_for_dd(tenant_id):
 def save_database(tenant_id, db_dict):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    usertenant["notion_db"] = db_dict
-    return usertenant
+    tenant["notion_db"] = db_dict
+    return tenant

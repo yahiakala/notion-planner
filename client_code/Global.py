@@ -17,6 +17,7 @@ _tenanted_dict = {
     "usertenant": None,
     "props_list": None,
     "permissions": None,
+    "notion_token": None
 }
 
 Global = GlobalCache(_global_dict, _tenanted_dict)

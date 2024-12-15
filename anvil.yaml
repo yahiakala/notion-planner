@@ -37,6 +37,24 @@ db_schema:
     - admin_ui: {order: 1, width: 200}
       name: new_roles
       type: simpleObject
+    - admin_ui: {order: 2, width: 200}
+      name: notion_token
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: prop_mapping
+      type: simpleObject
+    - admin_ui: {order: 5, width: 200}
+      name: defaults
+      type: simpleObject
+    - admin_ui: {order: 6, width: 200}
+      name: bk_tasks
+      type: simpleObject
+    - admin_ui: {order: 7, width: 200}
+      name: auto_refresh
+      type: bool
+    - admin_ui: {order: 3, width: 200}
+      name: notion_db
+      type: simpleObject
     server: full
     title: Tenants
   users:
@@ -80,34 +98,13 @@ db_schema:
   usertenant:
     client: none
     columns:
-    - admin_ui: {order: 1, width: 200}
-      name: notion_token
-      type: string
     - admin_ui: {order: 0, width: 200}
       name: user
       target: users
       type: link_single
-    - admin_ui: {order: 11, width: 200}
-      name: prop_mapping
-      type: simpleObject
-    - admin_ui: {order: 12, width: 200}
-      name: defaults
-      type: simpleObject
     - admin_ui: {order: 13, width: 200}
       name: max_daily_hours
       type: number
-    - admin_ui: {order: 14, width: 200}
-      name: bk_tasks
-      type: simpleObject
-    - admin_ui: {order: 15, width: 200}
-      name: customer_id
-      type: string
-    - admin_ui: {order: 16, width: 200}
-      name: auto_refresh
-      type: bool
-    - admin_ui: {order: 6, width: 200}
-      name: notion_db
-      type: simpleObject
     - admin_ui: {order: -1, width: 200}
       name: tenant
       target: tenants
@@ -175,7 +172,7 @@ secrets:
     value: {56LZBDCMD4KWXWAZ: Su/7qNFR3YRTiJMk57Stm6Sh8ued5f57ElTuKfd7h8UbVsj40v/69R/j4X0kl5/KxBUSC+q8kGa6B/NElyCqjHf/yDPCTesAgrdmV6o0FgQI/zyHiyhL05CBVqp15sC2yVjyxmPRzLEUoqNrdOzJ1c78kxJCYsM=, SKCKPUFVJTQLNLCD: SWBu/MoK6zYvLl3FLAdXnDn4nBoslBZwrnOFy/c9esHvRo+n3Db8wxXbZ3f1FR+7LGQfVou4NHfsKOWjMrtlb6bE37QMV8G2CeGlO948m9cBEX7l4DKYVepgcDM1+I1ziR7iQpTOwmy25XNOqB7weXQGScIDzHo=}
   USER_SETTING:
     type: key
-    value: {? '' : NzML6QdXLjZaHhbazo7Ce3pu/P2Dbhiwu2EFVXPI7dX6H7BK1wb9TbKXOMqpn3P0YYrPImqc3NyF2GKgJ7nHubZiPilevDFGwukyT0jhUhllkMVzFFVwdkVylLqYLB4zKGKDPZaLkiE6Q/TYpDyoRsHorh6+r7g=, SKCKPUFVJTQLNLCD: 5GDKiVnUkYrzYPU4goG1stflMikiH6ia5/5AiLMOjslQvxkJpXrHaTpxXNWsPZLF5VfANfqT+WFacUCvtGGmcUdKGSs2iSmaqKSPg4aQ+PDp8QBOhuFkTVdt5vrD2Ck2QzfkqyLcJVLnGPPH+Wmv6NwF210UiMc=}
+    value: {? '' : NzML6QdXLjZaHhbazo7Ce3pu/P2Dbhiwu2EFVXPI7dX6H7BK1wb9TbKXOMqpn3P0YYrPImqc3NyF2GKgJ7nHubZiPilevDFGwukyT0jhUhllkMVzFFVwdkVylLqYLB4zKGKDPZaLkiE6Q/TYpDyoRsHorh6+r7g=, SKCKPUFVJTQLNLCD: 2NXLvruJPNoKKCnP4T4NwYw1bA+ZFoAm+Vctc67kaln/pdGyRmOStyDd9yE0jRQkCwTecHzpC93soKn97fcyxW7vfbikRXnzJa9y8cZLnnn0U6BQa/xk1byKdzYafiekIMENCFGq+CMjpJ17WvS6sUtXDtsSOfc=}
 services:
 - client_config: {}
   server_config: {}

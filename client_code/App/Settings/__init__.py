@@ -19,18 +19,18 @@ class Settings(SettingsTemplate):
             self.cp_mfa.visible = True
         self.rp_mfa.items = self.user["mfa"]
 
-        self.usertenant = Global.usertenant
-        if self.usertenant["notion_token"]:
+        self.tenant = Global.tenant
+        if self.tenant["notion_token"]:
             self.btn_setup_integration.text = "Update Integration"
             self.cp_prop_setup.visible = True
-            if self.usertenant["notion_db"]:
+            if self.tenant["notion_db"]:
                 self.cp_properties.visible = True
 
         self.props_list = Global.props_list
         self.rp_db_prop.items = self.props_list
-        if self.usertenant["notion_db"]:
+        if self.tenant["notion_db"]:
             self.lbl_task_database.text = (
-                f"Task Database: {self.usertenant['notion_db']['title']}"
+                f"Task Database: {self.tenant['notion_db']['title']}"
             )
         else:
             self.lbl_task_database.text = "Task Database not set."
@@ -40,6 +40,7 @@ class Settings(SettingsTemplate):
             self.cp_notion_api.visible = True
         else:
             self.btn_setup_integration.visible = True
+
 
     def btn_setup_integration_click(self, **event_args):
         """This method is called when the button is clicked"""
@@ -122,17 +123,23 @@ class Settings(SettingsTemplate):
     def btn_save_db_click(self, **event_args):
         """This method is called when the button is clicked"""
         self.cp_change_db.visible = False
-        self.usertenant = anvil.server.call(
+        self.tenant = anvil.server.call(
             "save_database", Global.tenant_id, self.dd_db_select.selected_value
         )
         self.lbl_task_database.text = (
-            f"Task Database: {self.usertenant['notion_db']['title']}"
+            f"Task Database: {self.tenant['notion_db']['title']}"
         )
-        if self.usertenant["notion_db"]:
+        if self.tenant["notion_db"]:
             self.cp_properties.visible = True
 
-    def sv_notion_token_reset(self, **event_args):
-        pass
+    def sv_notion_token_change(self, **event_args):
+        anvil.server.call('save_notion_token', Global.tenant_id, self.sv_notion_token.secret)
 
     def sv_notion_token_edit(self, **event_args):
-        pass
+        self.sv_notion_token.secret = Global.notion_token
+
+    def sv_notion_token_copy(self, **event_args):
+        self.sv_notion_token.secret = Global.notion_token
+
+    def sv_notion_token_view(self, **event_args):
+        self.sv_notion_token.secret = Global.notion_token
