@@ -15,12 +15,7 @@ def get_auth_code(tenant_id):
     """Get authorization URL."""
     import urllib.parse
 
-    try:
-        CLIENT_ID = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
-    except anvil.secrets.SecretError:
-        raise anvil.server.InternalError('No client ID defined')
-
-    # CLIENT_ID = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
+    CLIENT_ID = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
     # Encode tenant_id in state parameter
     state = base64.urlsafe_b64encode(
         json.dumps({"tenant_id": tenant_id}).encode()

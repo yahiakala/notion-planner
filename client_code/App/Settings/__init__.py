@@ -43,14 +43,8 @@ class Settings(SettingsTemplate):
 
     def btn_setup_integration_click(self, **event_args):
         """This method is called when the button is clicked"""
-        try:
-            auth_url = anvil.server.call("get_auth_code", Global.tenant_id)
-            anvil.js.window.location.href = auth_url
-        except anvil.server.InternalError as e:
-            if 'client ID' in str(e):
-                alert('OAuth is disabled in the open source version. Please set your API key above.')
-            else:
-                raise
+        auth_url = anvil.server.call("get_auth_code", Global.tenant_id)
+        anvil.js.window.location.href = auth_url
 
     def btn_chg_pw_click(self, **event_args):
         self.lbl_pw_error.visible = False
