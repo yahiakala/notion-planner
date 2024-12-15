@@ -130,3 +130,9 @@ class Settings(SettingsTemplate):
         )
         if self.usertenant["notion_db"]:
             self.cp_properties.visible = True
+
+    def sv_notion_token_reset(self, **event_args):
+        pass
+
+    def sv_notion_token_edit(self, **event_args):
+        pass

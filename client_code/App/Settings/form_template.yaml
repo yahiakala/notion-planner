@@ -5,7 +5,8 @@ components:
     properties: {align: center, role: title, text: Notion API Key}
     type: Label
   - components:
-    - layout_properties: {grid_position: 'XGTUHG,JIYZIO'}
+    - event_bindings: {edit: sv_notion_token_edit, reset: sv_notion_token_reset}
+      layout_properties: {grid_position: 'XGTUHG,JIYZIO'}
       name: sv_notion_token
       properties: {}
       type: form:dep_8rd14mcq0xmrs:SecretViewer
