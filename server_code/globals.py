@@ -18,6 +18,16 @@ def get_data(key):
     # user = anvil.users.get_user(allow_remembered=True)
     if key == "all_permissions":
         return mt.authorization.get_all_permissions()
+    elif key == "deployment":
+        return get_deployment()
+
+
+def get_deployment():
+    try:
+        _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
+        return "saas"
+    except anvil.secrets.SecretError:
+        return "oss"
 
 
 # ----------------

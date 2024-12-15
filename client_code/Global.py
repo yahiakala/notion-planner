@@ -6,6 +6,7 @@ _global_dict = {
     "customer_portal": None,
     "tenant": None,
     "tenant_id": None,
+    "deployment": None
 }
 
 _tenanted_dict = {
