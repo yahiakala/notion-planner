@@ -265,7 +265,7 @@ def validate_props(tenant_id, user, silent=False):
     for prop in props_list:
         if silent:
             try:
-                validate_prop(prop["type"], prop["alias"])
+                validate_prop(tenant_id, prop["type"], prop["alias"])
             except Exception as e:
                 if "NotionError" in str(e):
                     return False

@@ -74,6 +74,11 @@ def get_tenant_single(user=None, tenant=None):
     if not tenant:
         return None
 
+    # Eventually deprecate
+    tenant['prop_mapping'] = tenant['prop_mapping'] or notionyk.props_dict
+    tenant['max_daily_hours'] = tenant['max_daily_hours'] or 6
+    tenant['defaults'] = tenant['defaults'] or {'hours': 4}
+    
     tenant_dict = {
         "id": tenant.get_id(),
         "name": tenant["name"],

@@ -17,7 +17,7 @@ class Home(HomeTemplate):
         self.init_components(**properties)
 
         # Get the max number of hours to schedule in a day (x)
-        self.usertenant = Global.usertenant
+        self.tenant = Global.tenant
 
     def btn_reschedule_click(self, **event_args):
         """This method is called when the button is clicked"""
@@ -35,7 +35,7 @@ class Home(HomeTemplate):
 
         with anvil.server.no_loading_indicator:
             if not anvil.server.call(
-                "dt_bk_running", Global.tenant_id, "usertenant", "rebalance1_single"
+                "dt_bk_running", Global.tenant_id, "tenants", "rebalance1_single"
             ):
                 print_timestamp("ti_reschedule_tick: last one")
                 self.ti_reschedule.interval = 0
@@ -49,8 +49,8 @@ class Home(HomeTemplate):
 
     def btn_refresh_today_click(self, **event_args):
         """This method is called when the button is clicked"""
-        if self.usertenant["notion_db"]:
-            print("https://notion.so/" + self.usertenant["notion_db"]["id"])
-            anvil.js.window.location.href = "https://notion.so/" + self.usertenant[
+        if self.tenant["notion_db"]:
+            print("https://notion.so/" + self.tenant["notion_db"]["id"])
+            anvil.js.window.location.href = "https://notion.so/" + self.tenant[
                 "notion_db"
             ]["id"].replace("-", "")
