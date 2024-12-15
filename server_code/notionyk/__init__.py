@@ -310,6 +310,7 @@ def rebalance0(notion_token, database_id, property_mappings, defaults, max_hrs=6
                 rescheduled.loc[ind, "scheduled_str"] = ""
                 rescheduled.loc[ind, "scheduled"] = np.datetime64("nat")
                 # print('--There is no time so push to end')
+                continue
             elif len(day_assignment_2) > 0:
                 # Hard deadline so add it to the least busy day before that
                 dayass = day_assignment_2.copy()
