@@ -6,7 +6,7 @@ import anvil.tables.query as q
 import anvil.users
 import anvil_squared.multi_tenant as mt
 # from anvil.tables import app_tables
-from anvil_squared.background_tasks import proceed_or_abort, user_bk_running
+from anvil_squared.background_tasks import proceed_or_abort
 from anvil_squared.helpers import print_timestamp
 
 from . import notionyk
@@ -164,9 +164,6 @@ def rebalance1_single(tenant):
         )
 
 
-
-
-
 @anvil.server.callable(require_user=True)
 def rebalance1_call(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
@@ -181,20 +178,22 @@ def rebalance1_call(tenant_id):
 def dt_bk_running(tenant_id, table_name, bk_name):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    return user_bk_running(table_name, bk_name)
+    print_timestamp("dt_bk_running: " + user["email"] + " bk_name: " + bk_name)
 
+    row = tenant
 
-@anvil.server.http_endpoint(
-    "/reschedule-running", cross_site_session=True, enable_cors=True
-)
-def reschedule_running():
-    # TODO: not used yet.
-    # TODO: authorize
-    is_running = user_bk_running("tenant", "rebalance1_single")
-    headers = {"Content-Type": "application/json"}
-    return anvil.server.HttpResponse(
-        {"is_running": is_running}, headers=headers, status=200
-    )
+    if not row["bk_tasks"]:
+        return False
+    for i in row["bk_tasks"]:
+        if i["task_name"] == bk_name:
+            print_timestamp("Found bk task")
+            try:
+                task = anvil.server.get_background_task(i["task_id"])
+                if task.is_running():  # Ignore errors
+                    return True
+            except anvil.server.BackgroundTaskNotFound:
+                pass
+    return False
 
 
 @anvil.server.callable(require_user=True)
