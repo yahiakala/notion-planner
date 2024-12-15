@@ -2,6 +2,10 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 from anvil_squared.helpers import print_timestamp
 from anvil_squared.multi_tenant import authorization, tasks
+import anvil.users
+import anvil_squared.multi_tenant as mt
+from . import notionyk
+
 
 from . import routes  # noqa
 
@@ -58,3 +62,53 @@ def role_row_to_dict(role):
         "permissions": role_perm,
         "can_edit": role["can_edit"],
     }
+
+# -------
+# Tenants
+# -------
+def get_tenant_single(user=None, tenant=None):
+    """Get the tenant in this instance."""
+    user = user or anvil.users.get_user(allow_remembered=True)
+    tenant = tenant or app_tables.tenants.get()
+
+    if not tenant:
+        return None
+
+    tenant_dict = {
+        "id": tenant.get_id(),
+        "name": tenant["name"],
+        "prop_mapping": tenant["prop_mapping"],
+        "max_daily_hours": tenant["max_daily_hours"],
+        "defaults": tenant["defaults"],
+        "notion_token": tenant["notion_token"],
+        "notion_db": tenant["notion_db"]
+    }
+    if user:
+        tenant, usertenant, permissions = mt.authorization.validate_user(
+            tenant.get_id(), user, tenant=tenant
+        )
+        if "delete_members" in permissions:
+            # TODO: do not return client writable
+            return app_tables.tenants.client_writable().get()
+
+    return tenant_dict
+
+
+@anvil.server.callable(require_user=True)
+def create_tenant_single():
+    """Create a tenant."""
+    user = anvil.users.get_user(allow_remembered=True)
+    _ = mt.single_tenant.create_tenant_single(user, role_dict, "Admin", ["Applicant"])
+    tenant = app_tables.tenants.get()
+    tenant['prop_mapping'] = notionyk.props_dict
+    tenant['defaults'] = {"hours": 4}
+    tenant['max_daily_hours'] = 6
+    return mt.single_tenant.get_tenant_single(user, tenant)
+
+
+def get_deployment():
+    try:
+        _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
+        return "saas"
+    except anvil.secrets.SecretError:
+        return "oss"

@@ -55,6 +55,9 @@ db_schema:
     - admin_ui: {order: 3, width: 200}
       name: notion_db
       type: simpleObject
+    - admin_ui: {order: 8, width: 200}
+      name: max_daily_hours
+      type: number
     server: full
     title: Tenants
   users:

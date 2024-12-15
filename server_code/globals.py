@@ -7,7 +7,7 @@ from anvil_squared.helpers import print_timestamp
 import anvil.secrets
 
 from . import notionyk
-from .helpers import usertenant_row_to_dict
+from .import helpers
 
 
 # --------------------
@@ -20,41 +20,12 @@ def get_data(key):
     if key == "all_permissions":
         return mt.authorization.get_all_permissions()
     elif key == "deployment":
-        return get_deployment()
-    elif key == 'tenant_single':
-        return get_tenant_single()
+        return helpers.get_deployment()
+    elif key == 'tenant':
+        return helpers.get_tenant_single()
+    elif key == 'something':
+        return helpers.do_something()
 
-
-def get_deployment():
-    try:
-        _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
-        return "saas"
-    except anvil.secrets.SecretError:
-        return "oss"
-
-
-def get_tenant_single(user=None, tenant=None):
-    """Get the tenant in this instance."""
-    user = anvil.users.get_user(allow_remembered=True)
-    tenant = tenant or app_tables.tenants.get()
-
-    if not tenant:
-        return None
-
-    tenant_dict = {
-        "id": tenant.get_id(),
-        "name": tenant["name"],
-        ""
-    }
-    if user:
-        tenant, usertenant, permissions = mt.authorization.validate_user(
-            tenant.get_id(), user, tenant=tenant
-        )
-        if "delete_members" in permissions:
-            # TODO: do not return client writable
-            return app_tables.tenants.client_writable().get()
-
-    return tenant_dict
 
 # ----------------
 # Tenanted globals
@@ -92,7 +63,7 @@ def get_usertenant_dict(tenant_id, user):
     # usertenant["max_daily_hours"] = usertenant["max_daily_hours"] or 6
     # usertenant["defaults"] = usertenant["defaults"] or {"hours": 4}
 
-    data = usertenant_row_to_dict(usertenant)
+    data = helpers.usertenant_row_to_dict(usertenant)
     return data
 
 
