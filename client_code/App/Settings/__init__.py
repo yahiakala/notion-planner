@@ -134,12 +134,16 @@ class Settings(SettingsTemplate):
 
     def sv_notion_token_change(self, **event_args):
         anvil.server.call('save_notion_token', Global.tenant_id, self.sv_notion_token.secret)
+        Global.notion_token = self.sv_notion_token.secret
 
     def sv_notion_token_edit(self, **event_args):
-        self.sv_notion_token.secret = Global.notion_token
+        if not self.sv_notion_token.secret:
+            self.sv_notion_token.secret = Global.notion_token
 
     def sv_notion_token_copy(self, **event_args):
-        self.sv_notion_token.secret = Global.notion_token
+        if not self.sv_notion_token.secret:
+            self.sv_notion_token.secret = Global.notion_token
 
     def sv_notion_token_view(self, **event_args):
-        self.sv_notion_token.secret = Global.notion_token
+        if not self.sv_notion_token.secret:
+            self.sv_notion_token.secret = Global.notion_token

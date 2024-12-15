@@ -21,6 +21,8 @@ def get_data(key):
         return mt.authorization.get_all_permissions()
     elif key == "deployment":
         return get_deployment()
+    elif key == 'tenant_single':
+        return get_tenant_single()
 
 
 def get_deployment():
@@ -30,6 +32,29 @@ def get_deployment():
     except anvil.secrets.SecretError:
         return "oss"
 
+
+def get_tenant_single(user=None, tenant=None):
+    """Get the tenant in this instance."""
+    user = anvil.users.get_user(allow_remembered=True)
+    tenant = tenant or app_tables.tenants.get()
+
+    if not tenant:
+        return None
+
+    tenant_dict = {
+        "id": tenant.get_id(),
+        "name": tenant["name"],
+        ""
+    }
+    if user:
+        tenant, usertenant, permissions = mt.authorization.validate_user(
+            tenant.get_id(), user, tenant=tenant
+        )
+        if "delete_members" in permissions:
+            # TODO: do not return client writable
+            return app_tables.tenants.client_writable().get()
+
+    return tenant_dict
 
 # ----------------
 # Tenanted globals
@@ -47,6 +72,8 @@ def get_tenanted_data(tenant_id, key):
         return get_usertenant_dict(tenant_id, user)
     elif key == 'notion_token':
         return get_notion_token(tenant_id, user)
+    elif key == 'props_list':
+        return get_props_list(tenant_id, user)
 
 
 def get_users_iterable(tenant_id, user):
@@ -81,3 +108,12 @@ def get_notion_token(tenant_id, user):
                 raise
     else:
         return ''
+
+
+def get_props_list(tenant_id, user):
+    tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
+    props_list = notionyk.props_list
+    for prop in props_list:
+        if tenant["prop_mapping"] and prop["id"] in tenant["prop_mapping"]:
+            prop["alias"] = tenant["prop_mapping"][prop["id"]]
+    return props_list

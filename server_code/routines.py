@@ -10,6 +10,7 @@ from anvil_squared.background_tasks import proceed_or_abort, user_bk_running
 from anvil_squared.helpers import print_timestamp
 
 from . import notionyk
+from .globals import get_props_list
 
 
 @anvil.server.callable(require_user=True)
@@ -33,7 +34,7 @@ def get_today_tasks(tenant_id):
         not tenant["notion_token"]
         or not tenant["prop_mapping"]
         or not ["notion_db"]
-        or not validate_props(silent=True)
+        or not validate_props(tenant_id, user, silent=True)
     ):
         return []
 
@@ -170,32 +171,10 @@ def rebalance1_single(tenant):
 def rebalance1_call(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    if validate_props(silent=True):
+    if validate_props(tenant_id, user, silent=True):
         return anvil.server.launch_background_task("rebalance1_single", tenant)
     else:
         return None
-
-
-@anvil.server.http_endpoint(
-    "/reschedule-from-extension", cross_site_session=True, enable_cors=True
-)
-def reschedule_from_extension(tenant_id):
-    # TODO: figure out a way to pass the tenant_id
-    # headers = {
-    #     "Access-Control-Allow-Origin": "chrome-extension://onfmfojkjnhaicfcaakdkcbjgcpilnde",
-    #     "Access-Control-Allow-Methods": "GET",
-    #     "Access-Control-Allow-Headers": "Content-Type"
-    # }
-    # return anvil.server.HttpResponse(200)
-    user = anvil.users.get_user(allow_remembered=True)
-    tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    print_timestamp("reschedule_from_extension: got usertenant")
-    if validate_props(silent=True):
-        print_timestamp("User is validated and logged in.")
-        anvil.server.launch_background_task("rebalance1_single", tenant)
-        return anvil.server.HttpResponse(200)
-    else:
-        anvil.server.HttpResponse(400)
 
 
 @anvil.server.callable(require_user=True)
@@ -280,20 +259,9 @@ def delay_deadline(tenant_id, task):
     )
 
 
-@anvil.server.callable(require_user=True)
-def get_props_list(tenant_id):
-    user = anvil.users.get_user(allow_remembered=True)
-    tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    props_list = notionyk.props_list
-    for prop in props_list:
-        if tenant["prop_mapping"] and prop["id"] in tenant["prop_mapping"]:
-            prop["alias"] = tenant["prop_mapping"][prop["id"]]
-    return props_list
-
-
-def validate_props(silent=False):
-    """Validate all Notion properties in the usertenant."""
-    props_list = get_props_list()
+def validate_props(tenant_id, user, silent=False):
+    """Validate all Notion properties in the tenant."""
+    props_list = get_props_list(tenant_id, user)
     for prop in props_list:
         if silent:
             try:
