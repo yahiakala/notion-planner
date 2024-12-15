@@ -307,7 +307,8 @@ def rebalance0(notion_token, database_id, property_mappings, defaults, max_hrs=6
                 dayass = days_df.sort_values(by="day", ascending=False).copy()
                 rescheduled.loc[ind, "deadline"] = dayass.iloc[0, 0]
                 rescheduled.loc[ind, "deadline_str"] = dayass.index[0]
-                rescheduled.loc[ind, 'scheduled'] = ""
+                rescheduled.loc[ind, "scheduled_str"] = ""
+                rescheduled.loc[ind, "scheduled"] = np.datetime64("nat")
                 # print('--There is no time so push to end')
             elif len(day_assignment_2) > 0:
                 # Hard deadline so add it to the least busy day before that
