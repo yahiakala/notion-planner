@@ -6,7 +6,7 @@ components:
 - components:
   - layout_properties: {grid_position: 'QCIIZV,JUYABG'}
     name: lbl_title
-    properties: {align: center, bold: true, role: title, text: Sign up for Dreamtask}
+    properties: {align: center, bold: true, role: title, text: Sign up for Notion Planner}
     type: Label
   - event_bindings: {click: btn_google_click}
     layout_properties: {grid_position: 'ZOSTSU,WNSCXQ'}
