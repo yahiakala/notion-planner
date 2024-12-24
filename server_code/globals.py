@@ -7,7 +7,7 @@ from anvil_squared.helpers import print_timestamp
 import anvil.secrets
 
 from . import notionyk
-from .import helpers
+from . import helpers
 
 
 # --------------------
