@@ -66,6 +66,7 @@ def role_row_to_dict(role):
 # -------
 # Tenants
 # -------
+@anvil.server.callable(require_user=True)
 def get_tenant_single(user=None, tenant=None):
     """Get the tenant in this instance."""
     user = user or anvil.users.get_user(allow_remembered=True)

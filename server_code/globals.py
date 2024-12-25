@@ -21,8 +21,8 @@ def get_data(key):
         return mt.authorization.get_all_permissions()
     elif key == "deployment":
         return helpers.get_deployment()
-    elif key == 'tenant':
-        return helpers.get_tenant_single()
+    # elif key == 'tenant':
+    #     return helpers.get_tenant_single()
     elif key == 'something':
         return helpers.do_something()
 
