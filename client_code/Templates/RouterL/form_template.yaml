@@ -1,0 +1,56 @@
+components:
+- components: []
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'VJQWNW,PXLUPM'}
+    name: nav_home
+    properties: {path: /app/home, text: Home}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
+  - layout_properties: {grid_position: 'OSIVUM,AAVXTS'}
+    name: nav_settings
+    properties: {path: /app/settings, text: Settings}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
+  - layout_properties: {grid_position: 'WFSSFT,ENXFDM'}
+    name: nav_tasks
+    properties: {path: /app/tasks, text: Tasks}
+    type: form:dep_rqq5sijbhk2ew:router.NavLink
+  - components: []
+    event_bindings: {click: link_logout_click}
+    layout_properties: {grid_position: 'JKQMJO,UYKNIK'}
+    name: link_logout
+    properties: {align: left, background: '', bold: false, border: '', col_spacing: medium, col_widths: '', font: '', font_size: null, foreground: '', icon: 'fa:sign-out', icon_align: right, italic: false, role: null, spacing_above: small, spacing_below: small, text: Logout, tooltip: '', underline: false, url: '', visible: true, wrap_on: mobile}
+    type: Link
+  layout_properties: {slot: left-nav}
+  name: cp_sidebar
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
+- components:
+  - layout_properties: {width: 40}
+    name: img_logo
+    properties: {display_mode: fill_width, height: '30', source: _/theme/logo_trans.png}
+    type: Image
+  layout_properties: {slot: title}
+  name: fp_title
+  properties: {spacing: none, vertical_align: middle}
+  type: FlowPanel
+- components:
+  - event_bindings: {click: link_help_click}
+    name: link_help
+    properties: {icon: 'fa:question-circle', text: ''}
+    type: Link
+  layout_properties: {slot: nav-right}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
+slots:
+  slot_content:
+    index: 0
+    set_layout_properties: {grid_position: 'LROSFI,QHMAPN'}
+    target: {name: content_panel, type: container}
