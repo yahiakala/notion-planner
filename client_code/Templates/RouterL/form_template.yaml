@@ -49,6 +49,7 @@ container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
 is_package: true
+layout_metadata: {description: App Menu, title: Router}
 slots:
   slot_content:
     index: 0
