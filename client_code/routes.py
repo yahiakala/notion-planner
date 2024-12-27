@@ -1,5 +1,5 @@
 import anvil.server
-from routing.router import Redirect
+from routing.router import Redirect, Route
 from routing.router import TemplateWithContainerRoute as BaseRoute
 
 from .Global import Global
@@ -73,3 +73,9 @@ class TasksRoute(EnsureUserMixin, BaseRoute):
     path = "/app/tasks"
     form = "App.Rebalance"
     cache_form = True
+
+
+class NotFoundRoute(EnsureUserMixin, BaseRoute):
+    template = "Templates.Router"
+    form = "App.Home"
+    default_not_found = True

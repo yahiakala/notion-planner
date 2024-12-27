@@ -23,14 +23,15 @@ class Home(HomeTemplate):
         """This method is called when the button is clicked"""
         c = confirm("Are you sure you want to reschedule all your tasks?")
         if c:
-            self.btn_refresh_today.enabled = False
-            self.btn_reschedule.enabled = False
-            self.cp_loading.visible = True
             try:
                 _ = anvil.server.call_s("rebalance1_call", Global.tenant_id)
+                self.btn_refresh_today.enabled = False
+                self.btn_reschedule.enabled = False
+                self.cp_loading.visible = True
+                self.ti_reschedule.interval = 2
             except Exception as e:
                 alert(str(e))
-            self.ti_reschedule.interval = 2
+                router.navigate('/app/pricingtable')
 
     def ti_reschedule_tick(self, **event_args):
         """This method is called Every [interval] seconds. Does not trigger if [interval] is 0."""
