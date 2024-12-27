@@ -10,9 +10,9 @@ from . import notionyk
 from . import routes  # noqa
 
 role_dict = {
-    "Member": ["see_profile"],
+    "Member": ["schedule_tasks"],
     "Admin": [
-        "see_profile",
+        "schedule_tasks",
         "see_members",
         "edit_members",
         "delete_members",

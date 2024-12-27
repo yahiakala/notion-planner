@@ -93,9 +93,6 @@ db_schema:
     - admin_ui: {order: 9, width: 200}
       name: mfa
       type: simpleObject
-    - admin_ui: {width: 200}
-      name: name
-      type: string
     server: full
     title: Users
   usertenant:
