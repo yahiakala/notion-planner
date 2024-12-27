@@ -26,7 +26,10 @@ class Home(HomeTemplate):
             self.btn_refresh_today.enabled = False
             self.btn_reschedule.enabled = False
             self.cp_loading.visible = True
-            _ = anvil.server.call_s("rebalance1_call", Global.tenant_id)
+            try:
+                _ = anvil.server.call_s("rebalance1_call", Global.tenant_id)
+            except Exception as e:
+                alert(str(e))
             self.ti_reschedule.interval = 2
 
     def ti_reschedule_tick(self, **event_args):
