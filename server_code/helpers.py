@@ -7,8 +7,6 @@ import anvil_squared.multi_tenant as mt
 from . import notionyk
 
 
-from . import routes  # noqa
-
 role_dict = {
     "Member": ["schedule_tasks"],
     "Admin": [
