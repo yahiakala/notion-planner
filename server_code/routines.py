@@ -168,6 +168,9 @@ def rebalance1_single(tenant):
 def rebalance1_call(tenant_id):
     user = anvil.users.get_user(allow_remembered=True)
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
+    if 'schedule_tasks' not in permissions:
+        raise anvil.server.PermissionDenied('You do not have the schedule_tasks permission')
+        
     if validate_props(tenant_id, user, silent=True):
         return anvil.server.launch_background_task("rebalance1_single", tenant)
     else:
