@@ -17,8 +17,9 @@ class EnsureUserMixin:
                 Global.tenant_id = Global.tenant.get_id()
             except Exception:
                 Global.tenant_id = Global.tenant["id"]
-            print(Global.permissions)
-            print(Global.tenant)
+            # print(Global.permissions)
+            # print(Global.tenant)
+            # This executes globalcache in the server
             if "delete_members" in Global.permissions and (
                 Global.tenant["name"] is None or Global.tenant["name"] == ""
             ):
