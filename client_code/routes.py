@@ -10,7 +10,7 @@ class EnsureUserMixin:
         if not Global.user:
             raise Redirect(path="/signin")
         if Global.user and Global.get_s("tenant") is None:
-            Global.tenant = anvil.server.call('get_tenant_single')
+            Global.tenant = anvil.server.call("get_tenant_single")
             if Global.get_s("tenant") is None:
                 Global.tenant = anvil.server.call("create_tenant_single")
             try:
@@ -27,7 +27,6 @@ class EnsureUserMixin:
 
 
 class SignRoute(BaseRoute):
-    # TODO: use Global.deployment to edit route definitions
     template = "Templates.Static"
     path = "/"
     form = "Auth.Sign"

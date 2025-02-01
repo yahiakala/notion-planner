@@ -1,13 +1,16 @@
+import anvil.secrets
 import anvil.server
 import anvil.tables.query as q
 import anvil.users
 import anvil_squared.multi_tenant as mt
 from anvil.tables import app_tables
 from anvil_squared.helpers import print_timestamp
-import anvil.secrets
 
-from . import notionyk
-from . import helpers
+from . import helpers, notionyk
+
+# Import routes based on deployment
+if helpers.get_deployment() == "oss":
+    from . import routes  # noqa
 
 
 # --------------------
@@ -19,11 +22,11 @@ def get_data(key):
     # user = anvil.users.get_user(allow_remembered=True)
     if key == "all_permissions":
         return mt.authorization.get_all_permissions()
-    # elif key == "deployment":
-    #     return helpers.get_deployment()
+    elif key == "deployment":
+        return helpers.get_deployment()
     # elif key == 'tenant':
     #     return helpers.get_tenant_single()
-    elif key == 'something':
+    elif key == "something":
         return helpers.do_something()
 
 
@@ -41,9 +44,9 @@ def get_tenanted_data(tenant_id, key):
         return mt.authorization.get_permissions(tenant_id, user)
     elif key == "usertenant":
         return get_usertenant_dict(tenant_id, user)
-    elif key == 'notion_token':
+    elif key == "notion_token":
         return get_notion_token(tenant_id, user)
-    elif key == 'props_list':
+    elif key == "props_list":
         return get_props_list(tenant_id, user)
 
 
@@ -69,16 +72,18 @@ def get_usertenant_dict(tenant_id, user):
 
 def get_notion_token(tenant_id, user):
     tenant, usertenant, permissions = mt.authorization.validate_user(tenant_id, user)
-    if 'edit_integration' in permissions:
+    if "edit_integration" in permissions:
         try:
-            return anvil.secrets.decrypt_with_key('USER_SETTING', tenant['notion_token'])
+            return anvil.secrets.decrypt_with_key(
+                "USER_SETTING", tenant["notion_token"]
+            )
         except anvil.secrets.SecretError as e:
-            if 'This is not a valid key' in str(e):
-                return ''
+            if "This is not a valid key" in str(e):
+                return ""
             else:
                 raise
     else:
-        return ''
+        return ""
 
 
 def get_props_list(tenant_id, user):

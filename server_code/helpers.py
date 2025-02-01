@@ -1,13 +1,11 @@
 import anvil.tables.query as q
+import anvil.users
+import anvil_squared.multi_tenant as mt
 from anvil.tables import app_tables
 from anvil_squared.helpers import print_timestamp
 from anvil_squared.multi_tenant import authorization, tasks
-import anvil.users
-import anvil_squared.multi_tenant as mt
+
 from . import notionyk
-
-
-from . import routes  # noqa
 
 role_dict = {
     "Member": ["schedule_tasks"],
@@ -18,7 +16,7 @@ role_dict = {
         "delete_members",
         "delete_admin",
         "edit_roles",
-        "edit_integration"
+        "edit_integration",
     ],
 }
 
@@ -41,7 +39,7 @@ def usertenant_row_to_dict(row):
             None, row["user"], tenant=row["tenant"], usertenant=row
         ),
         "roles": authorization.get_user_roles(None, None, row, row["tenant"]),
-        "plan_permissions": authorization.get_plan_permissions(row["tenant"])
+        "plan_permissions": authorization.get_plan_permissions(row["tenant"]),
         # "prop_mapping": row["prop_mapping"],
         # "max_daily_hours": row["max_daily_hours"],
         # "defaults": row["defaults"],
@@ -64,6 +62,7 @@ def role_row_to_dict(role):
         "can_edit": role["can_edit"],
     }
 
+
 # -------
 # Tenants
 # -------
@@ -77,10 +76,10 @@ def get_tenant_single(user=None, tenant=None):
         return None
 
     # Eventually deprecate
-    tenant['prop_mapping'] = tenant['prop_mapping'] or notionyk.props_dict
-    tenant['max_daily_hours'] = tenant['max_daily_hours'] or 6
-    tenant['defaults'] = tenant['defaults'] or {'hours': 4}
-    
+    tenant["prop_mapping"] = tenant["prop_mapping"] or notionyk.props_dict
+    tenant["max_daily_hours"] = tenant["max_daily_hours"] or 6
+    tenant["defaults"] = tenant["defaults"] or {"hours": 4}
+
     tenant_dict = {
         "id": tenant.get_id(),
         "name": tenant["name"],
@@ -88,7 +87,7 @@ def get_tenant_single(user=None, tenant=None):
         "max_daily_hours": tenant["max_daily_hours"],
         "defaults": tenant["defaults"],
         "notion_token": tenant["notion_token"],
-        "notion_db": tenant["notion_db"]
+        "notion_db": tenant["notion_db"],
     }
     if user:
         tenant, usertenant, permissions = mt.authorization.validate_user(
@@ -107,15 +106,15 @@ def create_tenant_single():
     user = anvil.users.get_user(allow_remembered=True)
     _ = mt.single_tenant.create_tenant_single(user, role_dict, "Admin", ["Member"])
     tenant = app_tables.tenants.get()
-    tenant['prop_mapping'] = notionyk.props_dict
-    tenant['defaults'] = {"hours": 4}
-    tenant['max_daily_hours'] = 6
+    tenant["prop_mapping"] = notionyk.props_dict
+    tenant["defaults"] = {"hours": 4}
+    tenant["max_daily_hours"] = 6
     return mt.single_tenant.get_tenant_single(user, tenant)
 
 
-# def get_deployment():
-#     try:
-#         _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
-#         return "saas"
-#     except anvil.secrets.SecretError:
-#         return "oss"
+def get_deployment():
+    try:
+        _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
+        return "saas"
+    except anvil.secrets.SecretError:
+        return "oss"
