@@ -1,0 +1,3 @@
+This is an Anvil app. Anvil API documentation is at https://anvil.works/docs/api
+
+Ignore all linting errors. I use pre-commit anyway.
