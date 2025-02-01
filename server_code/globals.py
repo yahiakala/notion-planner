@@ -10,6 +10,7 @@ from . import helpers, notionyk
 
 # Import routes based on deployment
 if helpers.get_deployment() == "oss":
+    print('Server: oss routes are being loaded.')
     from . import routes  # noqa
 
 
