@@ -113,9 +113,9 @@ def create_tenant_single():
     return mt.single_tenant.get_tenant_single(user, tenant)
 
 
-def get_deployment():
-    try:
-        _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
-        return "saas"
-    except anvil.secrets.SecretError:
-        return "oss"
+# def get_deployment():
+#     try:
+#         _ = anvil.secrets.get_secret("NOTION_OAUTH_CLIENT_ID")
+#         return "saas"
+#     except anvil.secrets.SecretError:
+#         return "oss"

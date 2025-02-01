@@ -19,8 +19,8 @@ def get_data(key):
     # user = anvil.users.get_user(allow_remembered=True)
     if key == "all_permissions":
         return mt.authorization.get_all_permissions()
-    elif key == "deployment":
-        return helpers.get_deployment()
+    # elif key == "deployment":
+    #     return helpers.get_deployment()
     # elif key == 'tenant':
     #     return helpers.get_tenant_single()
     elif key == 'something':
