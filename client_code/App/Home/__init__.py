@@ -22,6 +22,7 @@ class Home(HomeTemplate):
     def btn_reschedule_click(self, **event_args):
         """This method is called when the button is clicked"""
         if 'schedule_tasks' not in Global.usertenant['plan_permissions']:
+            print(Global.usertenant['plan_permissions'])
             alert('Upgrade to access this feature')
         else:
             c = confirm("Are you sure you want to reschedule all your tasks?")
