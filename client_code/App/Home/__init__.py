@@ -32,6 +32,8 @@ class Home(HomeTemplate):
                     self.btn_reschedule.enabled = False
                     self.cp_loading.visible = True
                     self.ti_reschedule.interval = 2
+                except anvil.server.PermissionDenied:
+                    alert('You do not have permission for this action. Please contact your administrator.')
                 except Exception as e:
                     alert(str(e))
 
