@@ -76,7 +76,7 @@ class TasksRoute(EnsureUserMixin, BaseRoute):
     cache_form = True
 
 
-class NotFoundRoute(EnsureUserMixin, BaseRoute):
-    template = "Templates.Router"
-    form = "App.Home"
-    default_not_found = True
+# class NotFoundRoute(EnsureUserMixin, BaseRoute):
+#     template = "Templates.Router"
+#     form = "App.Home"
+#     default_not_found = True
