@@ -3,6 +3,7 @@ from routing.router import Redirect, Route
 from routing.router import TemplateWithContainerRoute as BaseRoute
 
 from .Global import Global
+print('OSS Routes are being loaded.')
 
 
 class EnsureUserMixin:
